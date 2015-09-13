@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="style.css">
+
+  <div class="input">
+    <span>Please select your color</span>
+    <input type="color" id="input-color"/>
+  </div>
+
+  <div class="intro" id="intro">
+    <p class="headline">Drag and drop your greyscale picture here.</p>
+    <p>You got a greyscale picture you want to transform to transparent. No need Photoshop or weird tutorials. This script will remove the white from the from your picture. You can even pick a color for your logo if you want to.</p>
+  </div>
+  
+  <div class="main">
+    <canvas id="render"></canvas>
+  </div>
+
+  <script src="ghoster.js"></script>
+  <script>
+
+    // Create the Ghoster instance
+    var myGhoster = new Ghoster(document.getElementById('render'));
+
+    // Listen the input change
+    document
+      .getElementById('input-color')
+      .addEventListener('change', function (e) {
+        hideIntro();
+        myGhoster.setColor(e.currentTarget.value).render();
+      });
+
+    // Listen for drag and drop
+    document.addEventListener('drop',      dropped,        false);
+    document.addEventListener('dragover',  preventDefault, false);
+    document.addEventListener('dragleave', preventDefault, false);
+
+    function preventDefault (event) {
+      event.preventDefault();
+    }
+
+    function dropped (event) {
+      preventDefault(event);
+
+      var data = event.dataTransfer;
+      if (!data || !data.files || !data.files[0]) {
+        return;
+      }
+
+      var file = new FileReader();
+      file.addEventListener('load', function () {
+        var img = new Image();
+        img.src = file.result;
+        myGhoster.setImageObject(img);
+        hideIntro();
+      }, false);
+      
+      file.readAsDataURL(data.files[0]);
+    }
+
+    // Interface
+    var introBox  = document.getElementById('intro');
+    function hideIntro () {
+      introBox.style.display = 'none';
+    }
+
+  </script>
+</html>

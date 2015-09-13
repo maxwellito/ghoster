@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  font-family: 'Helvetica-Neue', Helvetica, Arial, sans-serif;
+  background: url(alpha_bgr.png);
+  font-weight: 100;
+  color: #333;
+}
+.input {
+  position: fixed;
+  box-sizing: border-box;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background: #fdfdfd;
+  z-index: 10;
+}
+.intro {
+  margin: auto;
+  padding: 0 20px;
+  max-width: 560px;
+  text-align: center;
+}
+.headline {
+  font-size: 3rem;
+}
