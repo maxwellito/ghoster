@@ -53,8 +53,10 @@
       file.addEventListener('load', function () {
         var img = new Image();
         img.src = file.result;
-        myGhoster.setImageObject(img);
-        hideIntro();
+        setTimeout(function () {
+          myGhoster.setImageObject(img);
+          hideIntro();
+        }, 10);
       }, false);
       
       file.readAsDataURL(data.files[0]);
