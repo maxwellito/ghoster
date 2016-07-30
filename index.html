@@ -7,13 +7,14 @@
   <div class="input">
     <span>Please select your color</span>
     <input type="color" id="input-color"/>
+    <button onclick="savePicture()">Download</button>
   </div>
 
   <div class="intro" id="intro">
     <p class="headline">Drag and drop your greyscale picture here.</p>
     <p>You got a greyscale picture you want to transform to transparent. No need Photoshop or weird tutorials. This script will remove the white from the from your picture. You can even pick a color for your logo if you want to.</p>
   </div>
-  
+
   <div class="main">
     <canvas id="render"></canvas>
   </div>
@@ -22,7 +23,8 @@
   <script>
 
     // Create the Ghoster instance
-    var myGhoster = new Ghoster(document.getElementById('render'));
+    var myGhoster = new Ghoster(document.getElementById('render')),
+        uploadedFileName;
 
     // Listen the input change
     document
@@ -58,7 +60,8 @@
           hideIntro();
         }, 10);
       }, false);
-      
+
+      uploadedFileName = data.files[0].name;
       file.readAsDataURL(data.files[0]);
     }
 
@@ -67,6 +70,25 @@
     function hideIntro () {
       introBox.style.display = 'none';
     }
+
+    var downloadAnchor = document.createElement('a');
+    downloadAnchor.style = 'display: none';
+    document.body.appendChild(downloadAnchor);
+
+    function savePicture () {
+      if (!uploadedFileName) {
+        return;
+      }
+      myGhoster.canvasDst.toBlob(function (blob) {
+        var url = window.URL.createObjectURL(blob);
+        downloadAnchor.href = url;
+        downloadAnchor.download = uploadedFileName.split('.')[0] + '_transparent.png';
+        downloadAnchor.click();
+        window.setTimeout(function () {
+          window.URL.revokeObjectURL(url);
+        }, 10);
+      });
+    };
 
   </script>
 </html>
